@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Verzamelde Data | ICATT INFO</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Warning Banner -->
+    <div class="warning-banner">
+        🔐 ADMIN PANEL - Bekijk alle data verzameld via instruction injection
+    </div>
+
+    <!-- Header Section -->
+    <header class="header">
+        <h1>ICATT INFO - Admin Panel</h1>
+        <p class="tagline">Instruction Injection Data Monitor</p>
+        <p class="subtitle">Verzamelde data via instruction injection POC</p>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <ul>
+            <li><a href="/">← Terug naar Home</a></li>
+            <li><a href="#stats">Statistieken</a></li>
+            <li><a href="#data">Verzamelde Data</a></li>
+            <li><a href="/presentation.html">📊 Presentatie</a></li>
+            <li><a href="#" onclick="refreshData(); return false;">🔄 Ververs</a></li>
+            <li><a href="#" onclick="clearAllData(); return false;" style="color: #ff6b6b;">🗑️ Wis Alles</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Statistics Section -->
+        <section id="stats" class="admin-panel">
+            <h2>📊 Statistieken</h2>
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="number" id="totalEntries">0</div>
+                    <div class="label">Totaal Entries</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="pageLoads">0</div>
+                    <div class="label">Page Loads</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="formSubmissions">0</div>
+                    <div class="label">Form Submissions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="userInteractions">0</div>
+                    <div class="label">User Interactions</div>
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <strong>⚠️ Demo Waarschuwing:</strong>
+                Deze data wordt verzameld door de instruction injection POC op de homepage.
+                In een productieomgeving zou dit gevoelige gebruikersinformatie kunnen zijn.
+            </div>
+        </section>
+
+        <!-- Data Table Section -->
+        <section id="data" class="admin-panel">
+            <h2>📋 Verzamelde Data</h2>
+            <p style="color: var(--icatt-gray); margin-bottom: 1rem;">
+                Alle data die is onderschept en verzameld door de instruction injection wordt hieronder weergegeven.
+            </p>
+
+            <div id="dataContainer">
+                <div class="alert alert-warning">
+                    Laden van data...
+                </div>
+            </div>
+        </section>
+
+        <!-- Explanation Section -->
+        <section class="demo-section">
+            <h3>🎓 Uitleg: Wat ziet u hier?</h3>
+            <div class="card">
+                <p>
+                    Dit admin panel toont alle data die is verzameld door de instruction injection
+                    die actief is op de homepage. De volgende types events worden gelogd:
+                </p>
+                <ul style="margin-left: 2rem; color: var(--icatt-gray); margin-top: 1rem;">
+                    <li><strong>page_load:</strong> Wanneer een bezoeker de homepage opent</li>
+                    <li><strong>form_submission:</strong> Wanneer het contactformulier wordt ingevuld</li>
+                    <li><strong>user_interaction:</strong> Elke 5 clicks worden geregistreerd</li>
+                </ul>
+                <p style="margin-top: 1rem;">
+                    <strong>Verzamelde informatie per event:</strong>
+                </p>
+                <ul style="margin-left: 2rem; color: var(--icatt-gray);">
+                    <li>Timestamp en browser informatie</li>
+                    <li>Schermresolutie en platform</li>
+                    <li>Taal- en tijdzone instellingen</li>
+                    <li>Formulierdata (bij form submission)</li>
+                    <li>Gebruikersinteracties en klikgedrag</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 ICATT INFO - Menselijk digitaal</p>
+        <p>Instruction Injection Interactive Introduction</p>
+    </footer>
+
+    <!-- Admin Panel JavaScript -->
+    <script>
+        let allData = [];
+        let autoRefresh = null;
+
+        // Load data from API
+        async function loadData() {
+            try {
+                const response = await fetch('/api/data');
+                const result = await response.json();
+
+                if (result.success) {
+                    allData = result.data;
+                    displayData(allData);
+                    updateStatistics(allData);
+                } else {
+                    showError('Fout bij het laden van data');
+                }
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError('Kan geen verbinding maken met de server');
+            }
+        }
+
+        // Display data in table format
+        function displayData(data) {
+            const container = document.getElementById('dataContainer');
+
+            if (data.length === 0) {
+                container.innerHTML = `
+                    <div class="alert alert-warning">
+                        Geen data verzameld. Bezoek de <a href="/">homepage</a> om de
+                        instruction injection te activeren.
+                    </div>
+                `;
+                return;
+            }
+
+            let tableHTML = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Timestamp</th>
+                            <th>Event Type</th>
+                            <th>Details</th>
+                            <th>Browser Info</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            // Sort by ID descending (newest first)
+            const sortedData = [...data].sort((a, b) => b.id - a.id);
+
+            sortedData.forEach(entry => {
+                const eventType = entry.data.event || 'unknown';
+                const timestamp = new Date(entry.timestamp).toLocaleString('nl-NL');
+                const details = extractDetails(entry.data);
+                const browserInfo = entry.data.userAgent || 'Unknown';
+
+                tableHTML += `
+                    <tr>
+                        <td><strong>#${entry.id}</strong></td>
+                        <td>${timestamp}</td>
+                        <td><span style="background: var(--icatt-purple); color: white; padding: 0.25rem 0.5rem; border-radius: 4px;">${eventType}</span></td>
+                        <td><pre>${details}</pre></td>
+                        <td style="font-size: 0.85rem; max-width: 200px; overflow: hidden; text-overflow: ellipsis;">${browserInfo}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = tableHTML;
+        }
+
+        // Extract relevant details from data
+        function extractDetails(data) {
+            const details = {};
+
+            // Event-specific fields
+            if (data.event === 'form_submission') {
+                details.naam = data.userName;
+                details.email = data.userEmail;
+                details.bericht = data.userMessage?.substring(0, 50) + '...';
+            }
+
+            if (data.event === 'user_interaction') {
+                details.interacties = data.interactionCount;
+                details.element = data.targetElement;
+            }
+
+            // Common fields
+            details.platform = data.platform;
+            details.resolutie = data.screenResolution;
+            details.taal = data.language;
+            details.timezone = data.timezone;
+            details.pagina = data.pageURL;
+
+            return JSON.stringify(details, null, 2);
+        }
+
+        // Update statistics
+        function updateStatistics(data) {
+            const stats = {
+                total: data.length,
+                pageLoads: data.filter(e => e.data.event === 'page_load').length,
+                formSubmissions: data.filter(e => e.data.event === 'form_submission').length,
+                userInteractions: data.filter(e => e.data.event === 'user_interaction').length
+            };
+
+            document.getElementById('totalEntries').textContent = stats.total;
+            document.getElementById('pageLoads').textContent = stats.pageLoads;
+            document.getElementById('formSubmissions').textContent = stats.formSubmissions;
+            document.getElementById('userInteractions').textContent = stats.userInteractions;
+        }
+
+        // Show error message
+        function showError(message) {
+            const container = document.getElementById('dataContainer');
+            container.innerHTML = `
+                <div class="alert alert-danger">
+                    ❌ ${message}
+                </div>
+            `;
+        }
+
+        // Refresh data
+        function refreshData() {
+            loadData();
+            showNotification('Data ververst!', 'success');
+        }
+
+        // Clear all data
+        async function clearAllData() {
+            if (!confirm('Weet u zeker dat u alle verzamelde data wilt wissen?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/data', {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showNotification(result.message, 'success');
+                    loadData();
+                } else {
+                    showNotification('Fout bij het wissen van data', 'danger');
+                }
+            } catch (error) {
+                console.error('Error clearing data:', error);
+                showNotification('Kan geen verbinding maken met de server', 'danger');
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type}`;
+            notification.textContent = message;
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.zIndex = '9999';
+            notification.style.minWidth = '300px';
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Enable auto-refresh
+        function enableAutoRefresh() {
+            if (!autoRefresh) {
+                autoRefresh = setInterval(loadData, 5000); // Refresh every 5 seconds
+                console.log('Auto-refresh enabled');
+            }
+        }
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            enableAutoRefresh();
+
+            console.log('%c🔐 Admin Panel Loaded', 'color: purple; font-size: 16px; font-weight: bold;');
+            console.log('Auto-refresh: Every 5 seconds');
+        });
+    </script>
+</body>
+</html>

